@@ -1,4 +1,3 @@
-_ = require('underscore')._
 jetty = org.eclipse.jetty;
 
 servlet = (fn) ->
@@ -6,10 +5,8 @@ servlet = (fn) ->
     service: (req, res) ->
       [status, headers, body] = fn({method: req.getMethod(), uri: req.getRequestURI()})
       res.setStatus(status)
-      _.each headers, (header, value) ->
-        res.addHeader(header, value)
-      _.each body, (chunk) ->
-        res.getWriter().print(chunk)
+      res.addHeader(header, value) for header, value in headers
+      res.getWriter().print(chunk) for chunk in body
   })
 
 contextHandler = (app) -> 
