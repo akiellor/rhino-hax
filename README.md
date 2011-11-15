@@ -38,3 +38,9 @@ Ever wanted to write a servlet in javascript...ME TOO!
 3. [sinatra.coffee](rhino-hax/blob/master/modules/sinatra.coffee) - Gets you writing some sinatra style ditties.
 4. [http.coffee](rhino-hax/blob/master/modules/http.coffee) - Some stuff to get jetty off its ass.
 
+##IDEAZ
+URLS for loading deps? Respects cache headers...
+
+```javascript
+var jasmine = require("https://github.com/pivotal/jasmine/blob/master/lib/jasmine-core/jasmine.js")
+```
