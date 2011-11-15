@@ -1,5 +1,5 @@
 #The Blurb
-**rhino-hax** is what it says it is, a bunch of hacks:
+**rhino-hax** is what it says it is, a bunch of hacks...with rhino:
 
 ##You want me to require WHAT?!!? - [polyglot.js](rhino-hax/blob/master/modules/polyglot.js)
 Allows you to require any language compilable to javascript.
