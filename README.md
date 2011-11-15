@@ -24,6 +24,7 @@ Jasmine requires setTimeout/setInterval timers, which are part of the DOM, node.
 conveniently provides these timers, rhino does not.
 
 These guys do the heavy lifting:
+
 1. spec.js - gives it the boot.
 2. modules/jasmine-console-runner.coffee - a little runner.
 3. modules/jasmine-console-reporter.js and modules/jasmine.js - looks suprisingly similar to files from [pivotal/jasmine](https://github.com/pivotal/jasmine)
