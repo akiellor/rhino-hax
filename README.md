@@ -25,16 +25,16 @@ conveniently provides these timers, rhino does not.
 
 These guys do the heavy lifting.
 
-1. [spec.js](blob/master/spec.js) - gives it the boot.
-2. [jasmine-console-runner.coffee](blob/master/modules/jasmine-console-runner.coffee) - a little runner.
-3. [jasmine-console-reporter.js](blob/master/modules/jasmine-console-reporter.js) and [jasmine.js](blob/master/modules/jasmine.js) - looks suprisingly similar to files from [pivotal/jasmine](https://github.com/pivotal/jasmine)
-4. [timers.coffee](blob/master/modules/timers.coffee) - those blasted timers.
+1. [spec.js](rhino-hax/blob/master/spec.js) - gives it the boot.
+2. [jasmine-console-runner.coffee](rhino-hax/blob/master/modules/jasmine-console-runner.coffee) - a little runner.
+3. [jasmine-console-reporter.js](rhino-hax/blob/master/modules/jasmine-console-reporter.js) and [jasmine.js](blob/master/modules/jasmine.js) - looks suprisingly similar to files from [pivotal/jasmine](https://github.com/pivotal/jasmine)
+4. [timers.coffee](rhino-hax/blob/master/modules/timers.coffee) - those blasted timers.
 
 ##Rhino, Jetty, Servlet, Sinatra...tokenTechnologyN + 1.
 Ever wanted to write a servlet in javascript...ME TOO!
 
-1. [main.js](blob/master/main.js) - boots it all.
-2. [app.coffee](blob/master/app.coffee) - foo/barred ping/pong app.
-3. [sinatra.coffee](blob/master/modules/sinatra.coffee) - Gets you writing some sinatra style ditties.
-4. [http.coffee](blob/master/modules/http.coffee) - Some stuff to get jetty off its ass.
+1. [main.js](rhino-hax/blob/master/main.js) - boots it all.
+2. [app.coffee](rhino-hax/blob/master/app.coffee) - foo/barred ping/pong app.
+3. [sinatra.coffee](rhino-hax/blob/master/modules/sinatra.coffee) - Gets you writing some sinatra style ditties.
+4. [http.coffee](rhino-hax/blob/master/modules/http.coffee) - Some stuff to get jetty off its ass.
 
