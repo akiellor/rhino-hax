@@ -23,7 +23,7 @@ You know that whole DOM independence thing jasmine talks about, not so true.
 Jasmine requires setTimeout/setInterval timers, which are part of the DOM, node.js
 conveniently provides these timers, rhino does not.
 
-These guys do the heavy lifting:
+These guys do the heavy lifting.
 
 1. spec.js - gives it the boot.
 2. modules/jasmine-console-runner.coffee - a little runner.
