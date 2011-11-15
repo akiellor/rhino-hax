@@ -1,8 +1,7 @@
 list = (file) ->
   file = new java.io.File(file)
   if file.isFile() && file.exists()
-    filePath = file.getPath()
-    [filePath.substring(0, filePath.lastIndexOf('.'))]
+    [file.getPath()]
   
   else if (file.isDirectory())
     files = file.listFiles()

@@ -10,4 +10,7 @@ exports.buffered = ->
     flush: flush
   }
 
-
+exports.logger = ->
+  return {
+    log: (msg) -> java.lang.System.out.print(msg.toString())
+  }
