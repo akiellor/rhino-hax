@@ -27,7 +27,7 @@ These guys do the heavy lifting.
 
 1. [spec.js](rhino-hax/blob/master/spec.js) - gives it the boot.
 2. [jasmine-console-runner.coffee](rhino-hax/blob/master/modules/jasmine-console-runner.coffee) - a little runner.
-3. [jasmine-console-reporter.js](rhino-hax/blob/master/modules/jasmine-console-reporter.js) and [jasmine.js](blob/master/modules/jasmine.js) - looks suprisingly similar to files from [pivotal/jasmine](https://github.com/pivotal/jasmine)
+3. [jasmine-console-reporter.js](rhino-hax/blob/master/modules/jasmine-console-reporter.js) and [jasmine.js](rhino-hax/blob/master/modules/jasmine.js) - looks suprisingly similar to files from [pivotal/jasmine](https://github.com/pivotal/jasmine)
 4. [timers.coffee](rhino-hax/blob/master/modules/timers.coffee) - those blasted timers.
 
 ##Rhino, Jetty, Servlet, Sinatra...tokenTechnologyN + 1.
