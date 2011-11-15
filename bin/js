@@ -1,0 +1,20 @@
+#!/bin/sh -e
+
+debug(){
+  if [[ $DEBUG ]]
+  then
+    echo $1
+  fi
+}
+
+ROOT=$(cd $(dirname $0)/../ && pwd)
+
+CLASSPATH=''
+for next in lib/*; do
+  CLASSPATH=$CLASSPATH$ROOT'/'$next:
+done
+
+debug "Root: $ROOT"
+debug "Classpath: $CLASSPATH"
+
+rlwrap -C js java -cp $CLASSPATH org.mozilla.javascript.tools.shell.Main -modules . -opt -1 $@

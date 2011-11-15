@@ -1,0 +1,19 @@
+require.paths.unshift("modules");
+require.paths.unshift(".");
+
+var polyglot = require('polyglot').polyglot();
+polyglot.register('coffee', require('coffee-script').CoffeeScript.compile);
+require = polyglot.require;
+
+var config = arguments[0] ? {specDir: arguments[0]} : {specDir: "specs"};
+var runner = require('jasmine-console-runner').console(config)
+
+runner.done(function(runner){
+  if(runner.results().failedCount > 0){
+    quit(1);
+  }else{
+    quit(0);
+  }
+});
+
+runner.run();
