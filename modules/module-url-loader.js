@@ -1,3 +1,7 @@
+/*
+ * This is a nasty hackfest. DONT JUDGE.
+ */
+
 var client = Packages.org.apache.http.impl.client;
 var cache = client.cache;
 var Scheme = org.apache.http.conn.scheme.Scheme;
@@ -33,6 +37,9 @@ var sr = new org.apache.http.conn.scheme.SchemeRegistry();
 sr.register(http);
 sr.register(https);
 
+var systemProperties = java.lang.System.getProperties();
+systemProperties.put("net.spy.log.LoggerImpl", "net.spy.memcached.compat.log.Log4JLogger");
+java.lang.System.setProperties(systemProperties);
 var cacheStorage = new org.apache.http.impl.client.cache.memcached.MemcachedHttpCacheStorage(new java.net.InetSocketAddress("localhost", 11211));
 
 exports.urlLoader = function(){

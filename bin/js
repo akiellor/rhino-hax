@@ -1,7 +1,8 @@
 #!/bin/sh -e
 
-LOGLEVEL="fatal"
-if [[ $DEBUG ]]
+LOGLEVEL=${LOGLEVEL:-"info"}
+
+if [ $DEBUG ]
 then
   LOGLEVEL="debug"
 fi

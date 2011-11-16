@@ -1,8 +1,8 @@
 jasmineGlobals = require('https://raw.github.com/pivotal/jasmine/v2.0.0.rc1/lib/jasmine-core/jasmine.js', require('timers'))
-jasmine = jasmineGlobals.jasmine
-logger = require('log').logger()
-fs = require('fs')
 require('https://raw.github.com/pivotal/jasmine/master/src/console/ConsoleReporter.js', jasmineGlobals)
+jasmine = jasmineGlobals.jasmine
+logger = require('log').logger("Jasmine", true)
+fs = require('fs')
 
 exports.console = (config) ->
   donebacks = []
