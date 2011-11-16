@@ -2,7 +2,7 @@ require.paths.unshift("modules");
 require.paths.unshift(".");
 
 var polyglot = require('polyglot').polyglot();
-polyglot.register('coffee', require('coffee-script').CoffeeScript.compile);
+polyglot.register('coffee', polyglot.require('https://raw.github.com/akiellor/coffee-script/master/extras/coffee-script.js').CoffeeScript.compile);
 require = polyglot.require;
 
 require('http').server(function(){

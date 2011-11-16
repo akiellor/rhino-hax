@@ -1,18 +1,36 @@
+var urlLoader = require('module-url-loader').urlLoader;
+
 var compilers = {'js': function(source){return source;}};
 
 function register(ext, compile){
   compilers[ext] = compile;
 }
 
-function contents(lib){
-  for(var ext in compilers){
-    for(var index in require.paths){
-      var f = new java.io.File(require.paths[index], lib + '.' + ext);
-      if(f.exists()){
-        return compilers[ext](readFile(f.path));
-      }else{
-        continue;
+var fileLoader = function(){
+  return {
+    loadFn: function(lib){
+      for(var ext in compilers){
+        for(var index in require.paths){
+          var f = new java.io.File(require.paths[index], lib + '.' + ext);
+          if(f.exists()){
+            return function(){ return compilers[ext](readFile(f.path)); };
+          }else{
+            continue;
+          }
+        }
       }
+      return false;
+    }
+  }
+}
+
+var loaders = [urlLoader(), fileLoader()];
+
+function contents(lib){
+  for(var i = 0; i < loaders.length; i++){
+    var loadFn = loaders[i].loadFn(lib);
+    if(loadFn){
+      return loadFn();
     }
   }
   throw "Module not found: " + lib;
