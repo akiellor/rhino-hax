@@ -16,16 +16,6 @@ var streams = {
   }
 }
 
-var logger = function(objectName){
-  return {
-    debug: function(msg){
-      if(java.lang.System.getenv().get("DEBUG")){
-        java.lang.System.out.println(objectName + ": " + msg.toString());
-      }
-    }
-  }
-}
-
 var easyTrustManager = new javax.net.ssl.X509TrustManager({
   checkClientTrusted: function(){},
   getAcceptedIssuers: function(){return null;}
@@ -45,23 +35,27 @@ sr.register(https);
 
 var cacheStorage = new org.apache.http.impl.client.cache.memcached.MemcachedHttpCacheStorage(new java.net.InetSocketAddress("localhost", 11211));
 
-
 exports.urlLoader = function(){
   var cacheConfig = cache.CacheConfig();  
   cacheConfig.setMaxCacheEntries(1000);
-  cacheConfig.setMaxObjectSizeBytes(8192);
+  cacheConfig.setMaxObjectSizeBytes(10485760);
+  
+  var defaultClient = new client.DefaultHttpClient(new org.apache.http.impl.conn.SingleClientConnManager(sr));
+  var cachingClient = new cache.CachingHttpClient(defaultClient, cacheStorage,cacheConfig);
+  var log = require('log').logger("URL Loader");
 
-  var cachingClient = new cache.CachingHttpClient(new client.DefaultHttpClient(new org.apache.http.impl.conn.SingleClientConnManager(sr)), cacheStorage,cacheConfig);
-  var log = logger("URL Loader");
   return {
     loadFn: function(lib){
       try{
         var httpget = new org.apache.http.client.methods.HttpGet(lib);
         var localContext = new org.apache.http.protocol.BasicHttpContext();
         var response = cachingClient.execute(httpget, localContext);
-        log.debug("Loaded " + lib);
+
+        var responseStatus = localContext.getAttribute(cache.CachingHttpClient.CACHE_RESPONSE_STATUS);
+        log.debug(responseStatus.toString() + ": " + lib);
         return function() { return streams.toString(response.getEntity().getContent()) };
       }catch(e){
+        log.debug(e);
         return false;
       }
       return false; 

@@ -1,5 +1,11 @@
 #!/bin/sh -e
 
+LOGLEVEL="fatal"
+if [[ $DEBUG ]]
+then
+  LOGLEVEL="debug"
+fi
+
 debug(){
   if [[ $DEBUG ]]
   then
@@ -9,7 +15,7 @@ debug(){
 
 ROOT=$(cd $(dirname $0)/../ && pwd)
 
-CLASSPATH=''
+CLASSPATH='lib/:'
 for next in lib/*; do
   CLASSPATH=$CLASSPATH$ROOT'/'$next:
 done
@@ -17,4 +23,4 @@ done
 debug "Root: $ROOT"
 debug "Classpath: $CLASSPATH"
 
-rlwrap -C js java -cp $CLASSPATH org.mozilla.javascript.tools.shell.Main -modules . -opt -1 $@
+rlwrap -C js java -Dlog.level=$LOGLEVEL -cp $CLASSPATH org.mozilla.javascript.tools.shell.Main -modules . -opt -1 $@
