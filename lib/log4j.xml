@@ -9,10 +9,6 @@
     </layout> 
   </appender> 
 
-  <logger name="net.spy.memcached">
-    <level value="fatal" />
-  </logger>
-
   <root> 
     <priority value="${log.level}" /> 
     <appender-ref ref="console" /> 

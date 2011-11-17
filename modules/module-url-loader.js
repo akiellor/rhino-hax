@@ -1,3 +1,6 @@
+var log = require('log').logger("URL Loader");
+var streams = require('streams');
+var httpClient = require('http-client');
 /*
  * This is a nasty hackfest. DONT JUDGE.
  */
@@ -8,25 +11,8 @@ var Scheme = org.apache.http.conn.scheme.Scheme;
 var PlainSocketFactory = org.apache.http.conn.scheme.PlainSocketFactory;
 var SSLSocketFactory = org.apache.http.conn.ssl.SSLSocketFactory;
 
-var streams = {
-  toString: function(is){
-    var stream = new java.io.BufferedReader(new java.io.InputStreamReader(is));
-
-    var line, output = '';
-    while ((line = stream.readLine()) != null){
-      output = output + line + '\n';
-    }
-    return output;
-  }
-}
-
-var easyTrustManager = new javax.net.ssl.X509TrustManager({
-  checkClientTrusted: function(){},
-  getAcceptedIssuers: function(){return null;}
-});
-
 var sslcontext = javax.net.ssl.SSLContext.getInstance("SSL")
-sslcontext.init(null, [easyTrustManager], null);
+sslcontext.init(null, [require('ssl').trust.easy()], null);
 
 var sf = new SSLSocketFactory(sslcontext, SSLSocketFactory.STRICT_HOSTNAME_VERIFIER);
 
@@ -37,19 +23,13 @@ var sr = new org.apache.http.conn.scheme.SchemeRegistry();
 sr.register(http);
 sr.register(https);
 
-var systemProperties = java.lang.System.getProperties();
-systemProperties.put("net.spy.log.LoggerImpl", "net.spy.memcached.compat.log.Log4JLogger");
-java.lang.System.setProperties(systemProperties);
-var cacheStorage = new org.apache.http.impl.client.cache.memcached.MemcachedHttpCacheStorage(new java.net.InetSocketAddress("localhost", 11211));
-
 exports.urlLoader = function(){
   var cacheConfig = cache.CacheConfig();  
   cacheConfig.setMaxCacheEntries(1000);
   cacheConfig.setMaxObjectSizeBytes(10485760);
   
   var defaultClient = new client.DefaultHttpClient(new org.apache.http.impl.conn.SingleClientConnManager(sr));
-  var cachingClient = new cache.CachingHttpClient(defaultClient, cacheStorage,cacheConfig);
-  var log = require('log').logger("URL Loader");
+  var cachingClient = new cache.CachingHttpClient(defaultClient, httpClient.libraryCache('.libraries'), cacheConfig);
 
   return {
     loadFn: function(lib){
