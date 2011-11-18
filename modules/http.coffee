@@ -3,7 +3,7 @@ jetty = org.eclipse.jetty;
 servlet = (fn) ->
   return new javax.servlet.http.HttpServlet({
     service: (req, res) ->
-      [status, headers, body] = fn({method: req.getMethod(), uri: req.getRequestURI()})
+      [status, headers, body] = fn({method: req.getMethod(), uri: req.getRequestURI(), request: req, response: res})
       res.setStatus(status)
       res.addHeader(header, value) for header, value in headers
       res.getWriter().print(chunk) for chunk in body
