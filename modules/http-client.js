@@ -49,6 +49,7 @@ exports.libraryCache = function(path){
 
   return org.apache.http.client.cache.HttpCacheStorage({
     getEntry: function(key){
+      log.debug("libraryCache.getEntry: " + key);
       var hash = map.get(key);
       if(hash){
         return deserialiseEntry(java.io.File(path, hash).getPath());
