@@ -1,35 +1,17 @@
-var urlLoader = require('module-url-loader').urlLoader;
 var log = require('log').logger('Polyglot')
+var sandbox = require('sandbox');
+
 var compilers = {'js': function(source){return source;}};
-var streams = require('streams');
 
 function register(ext, compile){
   compilers[ext] = compile;
 }
 
-var fileLoader = function(){
-  return {
-    loadFn: function(lib){
-      for(var ext in compilers){
-        for(var index in require.paths){
-          var f = new java.io.File(require.paths[index], lib + '.' + ext);
-          if(f.exists()){
-            return function(){ return compilers[ext](streams.toString(java.io.FileInputStream(f.path))); };
-          }else{
-            continue;
-          }
-        }
-      }
-      return false;
-    }
-  }
-}
-
-var loaders = [urlLoader(), fileLoader()];
+var loaders = [require('module-url-loader').urlLoader(), require('module-file-loader').fileLoader()];
 
 function contents(lib){
   for(var i = 0; i < loaders.length; i++){
-    var loadFn = loaders[i].loadFn(lib);
+    var loadFn = loaders[i].loadFn(lib, compilers);
     if(loadFn){
       return loadFn();
     }
@@ -39,24 +21,14 @@ function contents(lib){
 
 function req(lib, globals){
   log.debug("REQUIRING: " + lib)
-  var ctx = Packages.org.mozilla.javascript.Context.enter();
-  var scope = sandbox();
-  for(var key in globals){
-    org.mozilla.javascript.ScriptableObject.putProperty(scope, key, globals[key]);
-  }
-  ctx.evaluateString(scope, contents(lib), lib, 0, null);
-  return org.mozilla.javascript.ScriptableObject.getProperty(scope, "exports");
+  var sb = sandbox.sandbox(globals);
+  sb.set("exports", {});
+  sb.set("require", req);
+  sb.eval(contents(lib), {name: lib});
+  return sb.get("exports");
 }
 
 req.paths = require.paths;
-
-function sandbox(){
-  var ctx = Packages.org.mozilla.javascript.Context.enter();
-  var scope = ctx.initStandardObjects();
-  org.mozilla.javascript.ScriptableObject.putProperty(scope, "exports", {});
-  org.mozilla.javascript.ScriptableObject.putProperty(scope, "require", req);
-  return scope;
-}
 
 exports.polyglot = function(){
   return {
