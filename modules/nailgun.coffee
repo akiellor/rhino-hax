@@ -1,21 +1,14 @@
 http = require('http')
 streams = require('streams')
-
-sandbox = ->
-  ctx = Packages.org.mozilla.javascript.Context.enter();
-  scope = ctx.initStandardObjects();
-  org.mozilla.javascript.ScriptableObject.putProperty(scope, "exports", {})
-  org.mozilla.javascript.ScriptableObject.putProperty(scope, "require", require('polyglot').polyglot().require)
-  org.mozilla.javascript.ScriptableObject.putProperty(scope, "arguments", [])
-  return scope;
+sandbox = require('sandbox')
 
 nailgunApp = require('sinatra').define ->
   this.post /^\/$/, (env) ->
     out = java.io.ByteArrayOutputStream()
     java.lang.System.setOut(java.io.PrintStream(out))
-    ctx = Packages.org.mozilla.javascript.Context.enter()
-    scope = sandbox()
-    ctx.evaluateString(scope, streams.toString(env.request.getInputStream()), '', 0, null)
+    scope = sandbox.sandbox()
+    scope.set("require", require('polyglot').polyglot().require)
+    scope.eval(streams.toString(env.request.getInputStream()), {name: 'repl'});
     return java.lang.String(out.toByteArray())
 
 
